@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        
+        <title>kuuna</title>
+
+        <link rel="stylesheet" href="../style.css"/>
+
+        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <link href="kuunaShooter.css" rel="stylesheet">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </head>
+    <body class="kBody">
+        <div class="d-flex flex-column align-items-center">
+            <h1 class="kTitle">kuuna</h1>
+            <p class="kText">Local</p>
+        </div>
+        <div class="wrapper" id="mainarea">
+            <div class="alert alert-warning centered-axis-xy" style="min-height: 20px; display:none;" role="alert" id="compilingmessage">
+                <div id='loadTasks'> </div>
+            </div>
+            <canvas tabindex=0 id="canvas" class="emscripten" oncontextmenu="event.preventDefault()" style="display:none;">
+        </div>
+        
+        <!-- <hidden> -->
+        <div class="row buttonarea text-center" id="buttonrow" hidden>
+            <div class="col-sm-2 text-center"></div>
+            <div class="col-sm-2 text-center"><button type="button" class="btn btn-primary" onclick="try { Module['pauseMainLoop'](); } catch(e) {console.error(e);}">Pause</button></div>
+            <div class="col-sm-2 text-center"><button type="button" class="btn btn-primary" onclick="try { Module['resumeMainLoop'](); } catch(e) {console.error(e);}">Resume</button></div>
+            <div class="col-sm-2 text-center"><button type="button" class="btn btn-primary" onclick="var w = document.getElementById('logwindow'); w.style.display = w.style.display ? '' : 'none';">Toggle Log</button></div>
+            <div class="col-sm-2 text-center"><button type="button" class="btn btn-primary" id='clear_indexeddb' onclick="try { deleteIndexedDBStorage(); } catch(e) {console.error(e);}">Clear IndexedDB</button></div>
+            <div class="col-sm-2 text-center"><button type="button" class="btn btn-primary" id="fullscreen_request">FullScreen</button></div>
+            <div class="col-sm-2 text-center"></div>
+            <div class="col-sm-2 text-center"></div>
+        </div>
+        <div class="texthalf text-normal jumbotron " id="logwindow" hidden></div>
+        <!-- </hidden>-->
+
+        <script src="kuunaShooter.UE4.js"></script>
+        
+    </body>
+</html>

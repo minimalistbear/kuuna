@@ -1,0 +1,15 @@
+{
+  "name": "kuuna",
+  "version": "0.0.1",
+  "description": "Evaluation of WebAssembly as a portable compilation target for delivery of complex applications to web browsers",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js"
+  },
+  "author": "Jörn Strömsdörfer",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.17.1"
+  }
+}
