@@ -8,3 +8,4 @@ Evaluation of WebAssembly as a portable compilation target for delivery of compl
 ## Dependencies
 * express 4.17.1
 * bootstrap 5.0.2
+* stats.js r17
