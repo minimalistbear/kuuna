@@ -8,10 +8,12 @@
 .history/
 
 # node.js
+node_modules/
 package-lock.json
 
-# Private Node Modules
-node_modules/
+# CI/CD
+app.err.log
+app.out.log
 
 # Mac/OSX
 .DS_Store
