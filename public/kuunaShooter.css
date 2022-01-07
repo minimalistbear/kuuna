@@ -1,13 +1,4 @@
-﻿/* CSS style sheet used with Epic Games HTML5 projects
- *
- * much of this is for UE4 development purposes.
- *
- * to create a custom CSS file for your project:
- * - make a copy of this file - or make one from scratch
- * - and put it in: "your project folder"/Build/HTML/GameX.css.template
- */
-
-html, body, .container {
+﻿html, body, .container {
 	height: 100%;
 	font-family: "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
 }
@@ -85,6 +76,13 @@ html, body, .container {
 	margin-left: auto;
 	margin-right: auto;
 	width: 100%;
+}
+
+video {
+	padding-right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100%;
 }
 
 .texthalf {
