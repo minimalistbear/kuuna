@@ -21,10 +21,13 @@
             <p class="kText">Remote</p>
         </div>
         <div class="wrapper" id="mainarea">
+            <div class="alert alert-warning centered-axis-xy" style="min-height: 20px;" role="alert" id="compilingmessage">
+                <div id='loadTasks'>Please press the top right button to initialize the remote session.</div>
+            </div>
             <video autoplay muted></video>
         </div>
 
-        <a href="/remote/broadcast" class="kFloatingTopRight btn btn-outline-secondary btn-sm">Broadcast</a>
+        <a onclick="openServer()" class="kFloatingTopRight btn btn-outline-secondary btn-sm" id="openRemoteSessionBtn">Open Remote Session</a>
 
         <script src="https://mrdoob.github.io/stats.js/build/stats.min.js"></script>
         <script src="../statistics.js"></script>

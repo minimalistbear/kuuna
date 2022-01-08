@@ -1,52 +1,56 @@
-const peerConnections = {};
 const socket = io.connect(window.location.origin);
+const peerConnection = new RTCPeerConnection();
 
-const canvas = document.querySelector('canvas');
-const stream = canvas.captureStream();
+let clientSocketID;
 
-socket.on("answer", (id, description) => {
-    peerConnections[id].setRemoteDescription(description);
+let callCompleted = false;
+
+async function callClient(socketId) {
+    const offer = await peerConnection.createOffer();
+    await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
+
+    socket.emit("call-client", {
+        offer,
+        to: socketId
+    });
+}
+
+socket.on("server-answered", async (data) => {
+    await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+
+    if (!callCompleted) {
+        callClient(data.socket);
+        callCompleted = true;
+    }
 });
 
-socket.on("watcher", id => {
-    const peerConnection = new RTCPeerConnection();
-    peerConnections[id] = peerConnection;
+async function getMedia() {
+    try {
+        const canvas = document.querySelector('canvas');
+        const stream = canvas.captureStream();
 
-    stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+        stream
+            .getTracks()
+            .forEach((track) => peerConnection.addTrack(track, stream));
 
-    peerConnection.onicecandidate = event => {
-        if (event.candidate) {
-        socket.emit("candidate", id, event.candidate);
-        }
-    };
+        const params = new URLSearchParams(window.location.search);
+        clientSocketID = params.get('clientid');
 
-    peerConnection
-        .createOffer()
-        .then(sdp => peerConnection.setLocalDescription(sdp))
-        .then(() => {
-            socket.emit("offer", id, peerConnection.localDescription);
-        });
-});
+        callClient(clientSocketID);
+    } catch(err) {
+        alert(err);
+    }
+}
 
-socket.on("candidate", (id, candidate) => {
-    peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
-});
+getMedia();
 
-socket.on("disconnectPeer", id => {
-    peerConnections[id].close();
-    delete peerConnections[id];
-});
+function remoteSessionInitialized() {
+    socket.emit("remote-session-initialized", {
+        to: clientSocketID
+    });
+}
 
 window.onunload = window.onbeforeunload = () => {
     socket.close();
+    peerConnection.close();
 };
-
-getStream();
-
-function getStream(stream) {
-    socket.emit("broadcaster");
-}
-
-function handleError(error) {
-    console.error("Error: ", error);
-}

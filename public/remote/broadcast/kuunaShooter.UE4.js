@@ -987,6 +987,8 @@ function postRunEmscripten() {
 	taskFinished(TASK_MAIN);
 	$("#compilingmessage").remove();
 
+    remoteSessionInitialized();
+
 	// The default Emscripten provided canvas resizing behavior is not needed,
 	// since we are controlling the canvas sizes here, so stub those functions out.
 	Browser.updateCanvasDimensions = function() {};
