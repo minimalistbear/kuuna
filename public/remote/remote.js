@@ -25,7 +25,7 @@ peerConnection.ontrack = function ({ streams: [stream] }) {
     video.srcObject = stream;
 };
 
-socket.on("remote-session-initialized", () => {
+socket.on("remote-session-initialised", () => {
     const compilingmessage = document.getElementById("compilingmessage");
     compilingmessage.remove();
 });

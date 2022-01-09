@@ -45,7 +45,7 @@ async function getMedia() {
 getMedia();
 
 function remoteSessionInitialized() {
-    socket.emit("remote-session-initialized", {
+    socket.emit("remote-session-initialised", {
         to: clientSocketID
     });
 }

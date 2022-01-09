@@ -39,8 +39,8 @@ io.sockets.on("connection", socket => {
         });
     });
 
-    socket.on("remote-session-initialized", (data) => {
-        socket.to(data.to).emit("remote-session-initialized", { });
+    socket.on("remote-session-initialised", (data) => {
+        socket.to(data.to).emit("remote-session-initialised", { });
     });
 });
 
