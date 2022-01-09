@@ -1,5 +1,7 @@
 const socket = io.connect(window.location.origin);
+
 const peerConnection = new RTCPeerConnection();
+let dataChannel;
 
 const video = document.querySelector("video");
 
@@ -10,6 +12,10 @@ socket.on("connect", () => {
 });
 
 socket.on("client-called", async (data) => {
+    peerConnection.ondatachannel = (e) => {
+        dataChannel = e.channel;
+    }
+
     await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
 
     const answer = await peerConnection.createAnswer();
@@ -20,6 +26,30 @@ socket.on("client-called", async (data) => {
         to: data.socket
     });
 });
+
+document.addEventListener('keydown', (event) => {
+    if(event.code == 'KeyW' || event.code == 'KeyA' || event.code == 'KeyS' || event.code == 'KeyD' || event.code == 'Space') {
+        let object = {
+            event: 'keydown',
+            code: event.code,
+            key: event.key
+        };
+
+        if (dataChannel) dataChannel.send(JSON.stringify(object));
+    }
+}, false);
+
+document.addEventListener('keyup', (event) => {
+    if(event.code == 'KeyW' || event.code == 'KeyA' || event.code == 'KeyS' || event.code == 'KeyD' || event.code == 'Space') {
+        let object = {
+            event: 'keyup',
+            code: event.code,
+            key: event.key
+        };
+
+        if (dataChannel) dataChannel.send(JSON.stringify(object));
+    }
+}, false);
 
 peerConnection.ontrack = function ({ streams: [stream] }) {
     video.srcObject = stream;

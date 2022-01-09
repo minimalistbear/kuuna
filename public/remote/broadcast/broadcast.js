@@ -1,5 +1,7 @@
 const socket = io.connect(window.location.origin);
+
 const peerConnection = new RTCPeerConnection();
+let dataChannel;
 
 let clientSocketID;
 
@@ -9,10 +11,22 @@ async function callClient(socketId) {
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
 
+    dataChannel = peerConnection.createDataChannel("sendChannel");
+    dataChannel.onmessage = handleReceiveMessage;
+
     socket.emit("call-client", {
         offer,
         to: socketId
     });
+}
+
+function handleReceiveMessage(e) {
+    var object = JSON.parse(e.data);
+
+    window.dispatchEvent(new KeyboardEvent(object.event, {
+        'key': object.key,
+        'code': object.code
+    }));
 }
 
 socket.on("server-answered", async (data) => {
