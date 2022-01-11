@@ -67,11 +67,13 @@ function pointerLockChange() {
     }
 }
 
-video.addEventListener('click', function() {
+video.addEventListener('mousedown', function(event) {
     if(!pointerLocked) {
         video.requestPointerLock = video.requestPointerLock || video.mozRequestPointerLock;
         video.requestPointerLock();
-    } else if(pointerLocked) {
+    }
+    
+    if(event.button == 0) {
         let object = {
             event: 'click'
         };

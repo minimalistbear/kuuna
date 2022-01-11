@@ -30,7 +30,9 @@ function handleReceiveMessage(e) {
         }));
     }
     if(object.event == 'click') {
-        if(canvas) canvas.click();
+        if(canvas) {
+            canvas.dispatchEvent(new Event('mousedown'));
+        }
     }
 }
 
