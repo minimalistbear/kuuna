@@ -24,7 +24,11 @@ app.get("/remote", (req, res) => {
 );
 app.post("/remote", (req, res) => {
         var socketID = req.body.socketID;
-        open('http://localhost:' + port + '/stream?clientid=' + socketID, {app: {name: 'google chrome'}});
+        open('http://localhost:' + port + '/stream?clientid=' + socketID,{
+            app: {
+                name: open.apps.chrome
+            }
+        });
         // TODO: kill chrome session after certain time of inactivity
 
         res.send('success');
