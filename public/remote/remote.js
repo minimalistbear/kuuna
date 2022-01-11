@@ -51,11 +51,38 @@ document.addEventListener('keyup', (event) => {
     }
 }, false);
 
+var pointerLocked = false;
+document.addEventListener('pointerlockchange', pointerLockChange, false);
+document.addEventListener('mozpointerlockchange', pointerLockChange, false);
+
+function pointerLockChange() {
+    if (document.pointerLockElement === video || document.mozPointerLockElement === video) {
+        video.addEventListener("mousemove", mouseMoveEvent, false);
+
+        pointerLocked = true;
+    } else {
+        video.removeEventListener("mousemove", mouseMoveEvent, false);
+
+        pointerLocked = false;
+    }
+}
 
 video.addEventListener('click', function() {
-    video.requestPointerLock = video.requestPointerLock || video.mozRequestPointerLock;
-    video.requestPointerLock();
+    if(!pointerLocked) {
+        video.requestPointerLock = video.requestPointerLock || video.mozRequestPointerLock;
+        video.requestPointerLock();
+    } else if(pointerLocked) {
+        let object = {
+            event: 'click'
+        };
+
+        if (dataChannel) dataChannel.send(JSON.stringify(object));
+    }
 });
+
+function mouseMoveEvent() {
+    // TODO
+}
 
 peerConnection.ontrack = function ({ streams: [stream] }) {
     video.srcObject = stream;
@@ -72,7 +99,6 @@ window.onunload = window.onbeforeunload = () => {
 };
 
 function openServer() {
-    // window.open(window.location.origin + "/remote/broadcast/?clientid=" + clientSocketID, "_blank").focus();
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/remote");
 

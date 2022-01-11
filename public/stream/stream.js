@@ -3,7 +3,7 @@ const socket = io.connect(window.location.origin);
 const peerConnection = new RTCPeerConnection();
 let dataChannel;
 
-let clientSocketID;
+let clientSocketID, canvas;
 
 let callCompleted = false;
 
@@ -23,10 +23,15 @@ async function callClient(socketId) {
 function handleReceiveMessage(e) {
     var object = JSON.parse(e.data);
 
-    window.dispatchEvent(new KeyboardEvent(object.event, {
-        'key': object.key,
-        'code': object.code
-    }));
+    if(object.event == 'keydown' || object.event == 'keyup') {
+        window.dispatchEvent(new KeyboardEvent(object.event, {
+            'key': object.key,
+            'code': object.code
+        }));
+    }
+    if(object.event == 'click') {
+        if(canvas) canvas.click();
+    }
 }
 
 socket.on("server-answered", async (data) => {
@@ -40,7 +45,7 @@ socket.on("server-answered", async (data) => {
 
 async function getMedia() {
     try {
-        const canvas = document.querySelector('canvas');
+        canvas = document.querySelector('canvas');
         const stream = canvas.captureStream();
 
         stream
