@@ -25,12 +25,13 @@ app.get("/remote", (req, res) => {
 app.post("/remote", (req, res) => {
         var socketID = req.body.socketID;
         open('http://localhost:' + port + '/stream?clientid=' + socketID, {app: {name: 'google chrome'}});
+        // TODO: kill chrome session after certain time of inactivity
 
         res.send('success');
     }
 )
 app.get("/stream", (req, res) => {
-        res.sendFile(path.join(__dirname, "../public/stream/stream.html"));
+        res.sendFile(path.join(__dirname, "../public/local/stream.html"));
     }
 );
 
