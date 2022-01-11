@@ -66,11 +66,27 @@ window.onunload = window.onbeforeunload = () => {
 };
 
 function openServer() {
-    window.open(window.location.origin + "/remote/broadcast/?clientid=" + clientSocketID, "_blank").focus();
+    // window.open(window.location.origin + "/remote/broadcast/?clientid=" + clientSocketID, "_blank").focus();
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/remote");
 
-    const openRemoteSessionBtn = document.getElementById("openRemoteSessionBtn");
-    openRemoteSessionBtn.remove();
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
 
-    const loadTasks = document.getElementById("loadTasks");
-    loadTasks.innerHTML = "Loading remote session...";
+    xhr.onreadystatechange = function () {
+        const loadTasks = document.getElementById("loadTasks");
+
+        if (xhr.readyState === 4) {
+            loadTasks.innerHTML = "Loading remote session...";
+        } else {
+            loadTasks.innerHTML = "An error has occurred on the server.";
+        }
+
+        const openRemoteSessionBtn = document.getElementById("openRemoteSessionBtn");
+        if(openRemoteSessionBtn) openRemoteSessionBtn.remove();
+    };
+
+    var data = `{"socketID":"${clientSocketID}"}`;
+
+    xhr.send(data);
 }

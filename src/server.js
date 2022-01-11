@@ -6,19 +6,31 @@ const app = express();
 const server = http.createServer(app);
 const io = require("socket.io")(server);
 
+const open = require('open');
+
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.json());
+
 app.get("/local", (req, res) => {
         res.sendFile(path.join(__dirname, "../public/local/local.html")); 
     }
 );
+
 app.get("/remote", (req, res) => {
         res.sendFile(path.join(__dirname, "../public/remote/remote.html")); 
     }
 );
-app.get("/remote/broadcast", (req, res) => {
-        res.sendFile(path.join(__dirname, "../public/remote/broadcast/broadcast.html")); 
+app.post("/remote", (req, res) => {
+        var socketID = req.body.socketID;
+        open('http://localhost:' + port + '/stream?clientid=' + socketID, {app: {name: 'google chrome'}});
+
+        res.send('success');
+    }
+)
+app.get("/stream", (req, res) => {
+        res.sendFile(path.join(__dirname, "../public/stream/stream.html"));
     }
 );
 

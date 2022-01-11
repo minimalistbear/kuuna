@@ -21,3 +21,4 @@ Evaluation of WebAssembly as a portable compilation target for delivery of compl
 * bootstrap 5.0.2
 * stats.js r17
 * socket.io 4.0.1
+* open 8.4.0

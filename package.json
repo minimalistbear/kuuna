@@ -12,6 +12,7 @@
   "repository": "github:minimalistbear/kuuna",
   "dependencies": {
     "express": "4.17.1",
+    "open": "8.4.0",
     "socket.io": "4.0.1"
   }
 }
