@@ -31,7 +31,7 @@ app.post("/remote", (req, res) => {
     }
 )
 app.get("/stream", (req, res) => {
-        res.sendFile(path.join(__dirname, "../public/local/stream.html"));
+        res.sendFile(path.join(__dirname, "../public/stream/stream.html"));
     }
 );
 

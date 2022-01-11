@@ -51,6 +51,12 @@ document.addEventListener('keyup', (event) => {
     }
 }, false);
 
+
+video.addEventListener('click', function() {
+    video.requestPointerLock = video.requestPointerLock || video.mozRequestPointerLock;
+    video.requestPointerLock();
+});
+
 peerConnection.ontrack = function ({ streams: [stream] }) {
     video.srcObject = stream;
 };
