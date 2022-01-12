@@ -12,6 +12,9 @@ const video = document.querySelector("video");
  */
 socket.on("connect", () => {
     clientSocketID = socket.id;
+
+    // Initialise remote server streaming session
+    openServer();
 });
 
 socket.on("client-called", async (data) => {
@@ -134,9 +137,3 @@ video.addEventListener('mousedown', (event) => {
 function mouseMoveEvent() {
     // TODO
 }
-
-/*
- * Initialisation
- *
- */
-openServer();
