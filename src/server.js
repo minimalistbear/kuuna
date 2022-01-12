@@ -1,3 +1,4 @@
+// Constants + Global Variables + Imports
 const express = require('express');
 const http = require("http");
 const path = require('path');
@@ -10,6 +11,10 @@ const open = require('open');
 
 const port = 3000;
 
+/*
+ * Setup for express.js routing
+ *
+ */
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.json());
 
@@ -38,6 +43,10 @@ app.get("/stream", (req, res) => {
     }
 );
 
+/*
+ * Setup for socketing
+ *
+ */
 io.sockets.on("error", e => console.log(e));
 
 io.sockets.on("connection", socket => {
@@ -66,6 +75,10 @@ io.sockets.on("connection", socket => {
     });
 });
 
+/*
+ * Initialisation
+ *
+ */
 server.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`)
 });
