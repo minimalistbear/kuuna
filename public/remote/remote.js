@@ -134,3 +134,9 @@ video.addEventListener('mousedown', (event) => {
 function mouseMoveEvent() {
     // TODO
 }
+
+/*
+ * Initialisation
+ *
+ */
+openServer();
