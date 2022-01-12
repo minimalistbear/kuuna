@@ -11,12 +11,19 @@ const video = document.querySelector("video");
  *
  */
 socket.on("connect", () => {
+    // Store own socket id to global variable:
+    // Will be used in POST XHR to server
+    // to open remote server streaming session with 'clientSocketID' as a query parameter
     clientSocketID = socket.id;
 
     // Initialise remote server streaming session
     openServer();
 });
 
+// Initial WebRTC call made from remote server streaming session: 'call-client'
+// Listening for 'client-called'
+// Responding with 'answer-server'
+// Remote server streaming session subsequently listening for 'server-answered'
 socket.on("client-called", async (data) => {
     peerConnection.ondatachannel = (e) => {
         dataChannel = e.channel;
@@ -33,11 +40,16 @@ socket.on("client-called", async (data) => {
     });
 });
 
+// Call to remove 'Loading remote session...' banner:
+// Initialised from remote server streaming session when compilation has completed
 socket.on("remote-session-initialised", () => {
     const compilingmessage = document.getElementById("compilingmessage");
     compilingmessage.remove();
 });
 
+// Called after socket has been opened:
+// POST XHR (to own URL) with JSON payload containing own ID
+// to open remote server streaming session with 'clientSocketID' as a query parameter
 function openServer() {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/remote");
@@ -53,9 +65,6 @@ function openServer() {
         } else {
             loadTasks.innerHTML = "An error has occurred on the server.";
         }
-
-        const openRemoteSessionBtn = document.getElementById("openRemoteSessionBtn");
-        if(openRemoteSessionBtn) openRemoteSessionBtn.remove();
     };
 
     var data = `{"socketID":"${clientSocketID}"}`;
@@ -79,7 +88,8 @@ window.onunload = window.onbeforeunload = () => {
  * mouse movements across video element
  * 
  */
-document.addEventListener('keydown', (event) => {
+// Keystroke event listeners
+window.addEventListener('keydown', (event) => {
     if(event.code == 'KeyW' || event.code == 'KeyA' || event.code == 'KeyS' || event.code == 'KeyD' || event.code == 'Space') {
         let object = {
             event: 'keydown',
@@ -90,8 +100,7 @@ document.addEventListener('keydown', (event) => {
         if (dataChannel) dataChannel.send(JSON.stringify(object));
     }
 }, false);
-
-document.addEventListener('keyup', (event) => {
+window.addEventListener('keyup', (event) => {
     if(event.code == 'KeyW' || event.code == 'KeyA' || event.code == 'KeyS' || event.code == 'KeyD' || event.code == 'Space') {
         let object = {
             event: 'keyup',
@@ -103,22 +112,7 @@ document.addEventListener('keyup', (event) => {
     }
 }, false);
 
-var pointerLocked = false;
-document.addEventListener('pointerlockchange', pointerLockChange, false);
-document.addEventListener('mozpointerlockchange', pointerLockChange, false);
-
-function pointerLockChange() {
-    if (document.pointerLockElement === video || document.mozPointerLockElement === video) {
-        video.addEventListener("mousemove", mouseMoveEvent, false);
-
-        pointerLocked = true;
-    } else {
-        video.removeEventListener("mousemove", mouseMoveEvent, false);
-
-        pointerLocked = false;
-    }
-}
-
+// (Left button) Mouse click (onto video element) event listener
 video.addEventListener('mousedown', (event) => {
     if(!pointerLocked) {
         video.requestPointerLock = video.requestPointerLock || video.mozRequestPointerLock;
@@ -134,6 +128,26 @@ video.addEventListener('mousedown', (event) => {
     }
 });
 
-function mouseMoveEvent() {
-    // TODO
+// Mouse movement (across video element) event listener
+video.addEventListener("mousemove", (event) => {
+    let object = {
+        event: 'mousemove',
+        movementX: event.movementX,
+        movementY: event.movementY
+    }
+
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+
+// Pointer lock change (in video element) event listeners
+// This and above listeners are designed to best emulate original behaviour of locally running app instance
+var pointerLocked = false;
+document.addEventListener('pointerlockchange', pointerLockChange, false);
+document.addEventListener('mozpointerlockchange', pointerLockChange, false);
+function pointerLockChange() {
+    if (document.pointerLockElement === video || document.mozPointerLockElement === video) {
+        pointerLocked = true;
+    } else {
+        pointerLocked = false;
+    }
 }
