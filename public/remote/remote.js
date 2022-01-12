@@ -67,7 +67,7 @@ function pointerLockChange() {
     }
 }
 
-video.addEventListener('mousedown', function(event) {
+video.addEventListener('mousedown', (event) => {
     if(!pointerLocked) {
         video.requestPointerLock = video.requestPointerLock || video.mozRequestPointerLock;
         video.requestPointerLock();
@@ -86,7 +86,7 @@ function mouseMoveEvent() {
     // TODO
 }
 
-peerConnection.ontrack = function ({ streams: [stream] }) {
+peerConnection.ontrack = ({streams: [stream]}) => {
     video.srcObject = stream;
 };
 
@@ -107,7 +107,7 @@ function openServer() {
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-Type", "application/json");
 
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = () => {
         const loadTasks = document.getElementById("loadTasks");
 
         if (xhr.readyState === 4) {

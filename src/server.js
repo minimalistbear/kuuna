@@ -29,7 +29,6 @@ app.post("/remote", (req, res) => {
                 name: open.apps.chrome
             }
         });
-        // TODO: kill chrome session after certain time of inactivity
 
         res.send('success');
     }
@@ -58,6 +57,12 @@ io.sockets.on("connection", socket => {
 
     socket.on("remote-session-initialised", (data) => {
         socket.to(data.to).emit("remote-session-initialised", { });
+    });
+
+    socket.on("disconnect", () => {
+        io.sockets.emit("client-session-disconnected", {
+            socket: socket.id
+        });
     });
 });
 

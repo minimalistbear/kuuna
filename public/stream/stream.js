@@ -45,6 +45,12 @@ socket.on("server-answered", async (data) => {
     }
 });
 
+socket.on("client-session-disconnected", (data) => {
+    if(data.socket == clientSocketID) {
+        window.close();
+    }
+});
+
 async function getMedia() {
     try {
         canvas = document.querySelector('canvas');
