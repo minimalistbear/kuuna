@@ -23,15 +23,25 @@
     border-color: #702fa0 !important;
 }
 
+.kTouchLetterButton {
+    width: 64px !important;
+    min-width: 64px !important;
+    height: 64px !important;
+}
+
 .kFloatingTopRight {
     position: fixed;
 	top: 20px;
 	right: 20px;
 }
 
-.kFloatingBottomCentre {
+.kFloatingBottomLeft {
     position: fixed;
 	bottom: 20px;
-	left: 50%;
-    transform: translate(-50%, 0);
+	left: 20px;
+}
+.kFloatingBottomRight {
+    position: fixed;
+	bottom: 20px;
+	right: 20px;
 }

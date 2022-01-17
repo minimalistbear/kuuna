@@ -158,9 +158,56 @@ function pointerLockChange() {
  *
  */
 var touchControlsEnabled = false;
-var touchControls = document.getElementById("touchControls");
+var touchControls = document.getElementsByClassName("touchControls")
 var touchControlSwitch = document.querySelector("input[id=touchControlsSwitch]");
 touchControlSwitch.addEventListener('change', () => {
     touchControlsEnabled = touchControlSwitch.checked;
-    touchControls.hidden = !touchControlsEnabled;
+    touchControls[0].hidden = touchControls[1].hidden = !touchControlsEnabled;
 })
+
+var touchButtonW = document.getElementById("touchButtonW");
+var touchButtonA = document.getElementById("touchButtonA");
+var touchButtonS = document.getElementById("touchButtonS");
+var touchButtonD = document.getElementById("touchButtonD");
+var touchButtonSpace = document.getElementById("touchButtonSpace");
+
+touchButtonW.addEventListener("touchstart", () => {
+    let object = { event: 'keydown', code: 'KeyW', key: 'w' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+touchButtonW.addEventListener("touchend", () => {
+    let object = { event: 'keyup', code: 'KeyW', key: 'w' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+touchButtonA.addEventListener("touchstart", () => {
+    let object = { event: 'keydown', code: 'KeyA', key: 'a' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+touchButtonA.addEventListener("touchend", () => {
+    let object = { event: 'keyup', code: 'KeyA', key: 'a' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+touchButtonS.addEventListener("touchstart", () => {
+    let object = { event: 'keydown', code: 'KeyS', key: 's' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+touchButtonS.addEventListener("touchend", () => {
+    let object = { event: 'keyup', code: 'KeyS', key: 's' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+touchButtonD.addEventListener("touchstart", () => {
+    let object = { event: 'keydown', code: 'KeyD', key: 'd' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+touchButtonD.addEventListener("touchend", () => {
+    let object = { event: 'keyup', code: 'KeyD', key: 'd' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+touchButtonSpace.addEventListener("touchstart", () => {
+    let object = { event: 'keydown', code: 'Space', key: ' ' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);
+touchButtonSpace.addEventListener("touchend", () => {
+    let object = { event: 'keyup', code: 'Space', key: ' ' };
+    if (dataChannel) dataChannel.send(JSON.stringify(object));
+}, false);

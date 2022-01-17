@@ -33,8 +33,26 @@
             <label class="form-check-label" for="touchControlsSwitch" style="color: #fff">Touch Controls</label>
         </div>
 
-        <div class="kFloatingBottomCentre" id="touchControls" hidden>
-            W A S D Space
+        <div class="kFloatingBottomLeft touchControls" hidden>
+            <div class="row">
+                <div class="col" style="width: 224.5px;">
+                    <div class="row justify-content-center" style="padding-bottom: 4px;">
+                        <button type="button" class="kTouchLetterButton btn btn-primary btn-lg btn-block" id="touchButtonW">W</button>
+                    </div>
+                    <div class="align-items-center" style="display: inline;">
+                        <button type="button" class="kTouchLetterButton btn btn-primary btn-lg btn-block" id="touchButtonA">A</button>
+                        <button type="button" class="kTouchLetterButton btn btn-primary btn-lg btn-block" id="touchButtonS">S</button>
+                        <button type="button" class="kTouchLetterButton btn btn-primary btn-lg btn-block" id="touchButtonD">D</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="kFloatingBottomRight touchControls" hidden>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" style="height: 64px; margin-top: 68px;" id="touchButtonSpace">Space</button>
+                </div>
+            </div>
         </div>
 
         <script src="https://mrdoob.github.io/stats.js/build/stats.min.js"></script>
