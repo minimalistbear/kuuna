@@ -17,7 +17,7 @@ socket.on("connect", () => {
     clientSocketID = socket.id;
 
     // Initialise remote server streaming session
-    openServer();
+    // TEMP openServer();
 });
 
 // Initial WebRTC call made from remote server streaming session: 'call-client'
@@ -151,3 +151,16 @@ function pointerLockChange() {
         pointerLocked = false;
     }
 }
+
+/*
+ * Functions and variables
+ * for touch controls
+ *
+ */
+var touchControlsEnabled = false;
+var touchControls = document.getElementById("touchControls");
+var touchControlSwitch = document.querySelector("input[id=touchControlsSwitch]");
+touchControlSwitch.addEventListener('change', () => {
+    touchControlsEnabled = touchControlSwitch.checked;
+    touchControls.hidden = !touchControlsEnabled;
+})

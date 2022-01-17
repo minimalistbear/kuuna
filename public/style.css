@@ -28,3 +28,10 @@
 	top: 20px;
 	right: 20px;
 }
+
+.kFloatingBottomCentre {
+    position: fixed;
+	bottom: 20px;
+	left: 50%;
+    transform: translate(-50%, 0);
+}
