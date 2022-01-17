@@ -17,7 +17,7 @@ socket.on("connect", () => {
     clientSocketID = socket.id;
 
     // Initialise remote server streaming session
-    // TEMP openServer();
+    openServer();
 });
 
 // Initial WebRTC call made from remote server streaming session: 'call-client'
