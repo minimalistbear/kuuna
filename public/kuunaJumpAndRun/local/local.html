@@ -8,17 +8,16 @@
         <link rel="stylesheet" href="../../style.css"/>
 
         <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-        <link rel="stylesheet" href="../../kuunaShooter.css"/>
+        <link rel="stylesheet" href="../../kuuna.css"/>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     </head>
-    <body class="kBody" id="body">
+    <body class="kBody">
         <div class="d-flex flex-column align-items-center">
-            <h1 class="kTitle">kuuna</h1>
-            <p class="kText">Stream</p>
+            <a href="/" style="text-decoration: none;"><h1 class="kTitle">kuuna</h1></a>
+            <h3 class="kTitle">Jump'N'Run</h3>
+            <p class="kText">Play Locally</p>
         </div>
         <div class="wrapper" id="mainarea">
             <div class="alert alert-warning centered-axis-xy" style="min-height: 20px; display:none;" role="alert" id="compilingmessage">
@@ -26,7 +25,7 @@
             </div>
             <canvas tabindex=0 id="canvas" class="emscripten" oncontextmenu="event.preventDefault()" style="display:none;"></canvas>
         </div>
-
+        
         <!-- <hidden> -->
         <div class="row buttonarea text-center" id="buttonrow" hidden>
             <div class="col-sm-2 text-center"></div>
@@ -44,8 +43,8 @@
         <script src="https://mrdoob.github.io/stats.js/build/stats.min.js"></script>
         <script src="../../statistics.js"></script>
 
-        <script src="kuunaShooter.UE4.js"></script>
+        <script src="kuunaJumpAndRun.UE4.js"></script>
 
-        <script src="stream.js"></script>
+        <script src="local.js"></script>
     </body>
 </html>

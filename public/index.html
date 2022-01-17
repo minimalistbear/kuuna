@@ -12,11 +12,47 @@
     </head>
     <body class="kBody">
         <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-            <h1 class="kTitle">kuuna</h1>
+            <!-- <h1 class="kTitle">kuuna</h1> -->
+            <a href="/" style="text-decoration: none;"><h1 class="kTitle">kuuna</h1></a>
             <p class="kText">Evaluation of WebAssembly as a portable compilation target for delivery of complex applications to web browsers</p>
             <div class="d-grid gap-3">
-                <a href="/local" class="btn btn-primary">Local</a>
-                <a href="/remote" class="btn btn-primary">Remote</a>
+                <div class="row">
+                    <div class="col">
+                        <div class="kCard card text-center" style="width: 18rem;">
+                            <img class="card-img-top" src="screenshot_kuunaShooter.png" alt="Screenshot of kuuna Shooter">
+                            <div class="card-body">
+                                <h5 class="card-title">Shooter</h5>
+                                <p class="card-text">First-Person Shooter</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                              <li class="list-group-item">
+                                <a href="/shooter/local" class="kButton btn btn-primary">Play Locally</a>
+                              </li>
+                              <li class="list-group-item">
+                                <a href="/shooter/remote" class="kButton btn btn-primary">Stream from Server</a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="kCard card text-center" style="width: 18rem;">
+                            <img class="card-img-top" src="screenshot_kuunaJumpAndRun.png" alt="Screenshot of kuuna Jump'N'Run">
+                            <div class="card-body">
+                                <h5 class="card-title">Jump'N'Run</h5>
+                                <p class="card-text">2D Jump and Run</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                              <li class="list-group-item">
+                                <a href="/jumpandrun/local" class="kButton btn btn-primary">Play Locally</a>
+                              </li>
+                              <li class="list-group-item">
+                                <a href="/jumpandrun/remote" class="kButton btn btn-primary">Stream from Server</a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </body>

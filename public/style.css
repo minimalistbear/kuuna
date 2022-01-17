@@ -11,6 +11,18 @@
     color: #FFFFFF;
 }
 
+.kCard {
+    background-color: #f8cbad !important;
+}
+.kCard .list-group .list-group-item {
+    background-color: #f8cbad;
+}
+
+.kButton {
+    background-color: #ed7e31 !important;
+    border-color: #702fa0 !important;
+}
+
 .kFloatingTopRight {
     position: fixed;
 	top: 20px;
