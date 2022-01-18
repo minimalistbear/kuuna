@@ -72,7 +72,7 @@ app.get("/jumpandrun/stream", (req, res) => {
 
 // Route for n-th Fibonacci no.
 app.get("/fibonacci", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/fibonacci/fibonacci.html"));
+    res.sendFile(path.join(__dirname, "../public/fibonacci/nthfibno.html"));
     console.log(new Date().toString() + ": app for n-th Fibonacci no. requested");
 });
 
