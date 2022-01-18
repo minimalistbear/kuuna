@@ -28,7 +28,8 @@
             <video autoplay muted></video>
         </div>
 
-        <div class="kFloatingTopRight form-check form-switch">
+        <div class="kFloatingTopRight form-check form-switch" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            title="Enable/Disable touch controls for mobile devices (Chrome on Android only).">
             <input class="form-check-input" type="checkbox" id="touchControlsSwitch">
             <label class="form-check-label" for="touchControlsSwitch" style="color: #fff">Touch Controls</label>
         </div>
@@ -60,4 +61,11 @@
 
         <script src="remote.js" async></script>
     </body>
+
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
 </html>
