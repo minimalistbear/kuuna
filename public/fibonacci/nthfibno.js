@@ -7,7 +7,7 @@ function calculate() {
     document.getElementById("invalidNoAlert").classList.remove("d-flex");
     document.getElementById("invalidNoAlert").display = "none";
 
-    if(Number.isInteger(parseFloat(n)) && parseInt(n) > 0 && !Number.isNaN(n)) {
+    if(Number.isInteger(parseFloat(n)) && parseInt(n) > 0 && parseInt(n) <= 42 && !Number.isNaN(n)) {
         var now = new Date();
         var x;
 
