@@ -61,8 +61,6 @@ app.post("/jumpandrun/remote", (req, res) => {
                 name: open.apps.chrome
             }
         });
-
-        res.send('success');
     }
 )
 app.get("/jumpandrun/stream", (req, res) => {
@@ -74,6 +72,20 @@ app.get("/jumpandrun/stream", (req, res) => {
 app.get("/fibonacci", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/fibonacci/nthfibno.html"));
     console.log(new Date().toString() + ": app for n-th Fibonacci no. requested");
+});
+app.post("/fibonacci", (req, res) => {
+    var n = req.body.n;
+
+    const fs = require('fs');
+    const wasmBuffer = fs.readFileSync(path.join(__dirname, "../public/fibonacci/fibonacci.wasm"));
+    WebAssembly.instantiate(wasmBuffer).then(wasmModule => {
+        const nthfibno = wasmModule.instance.exports.nthFibNo;
+        const x = nthfibno(n);
+
+        console.log(new Date().toString() + ": calculated nthFibNo(" + n + ") = " + x);
+        
+        res.send(x.toString());
+    });
 });
 
 /*

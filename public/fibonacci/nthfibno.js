@@ -15,10 +15,35 @@ function calculate() {
 
         var machine = document.getElementById("inputGroupSelectMachine").value;
         if(machine == "client") {
+            // Execution of function is blocking with large n
             x = _nthFibNo(n);
         } else if(machine == "server") {
-            // TODO
-            x = 'not supported yet';
+            // XHR POST is non-blocking => using overlay while waiting for response
+            document.getElementById("overlay").style.display = "block";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/fibonacci");
+        
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    x = xhr.responseText;
+
+                    document.getElementById("xField").innerHTML = x;
+    
+                    var msElapsed = new Date() - now;
+                    document.getElementById("msField").innerHTML = msElapsed + "ms";
+
+                    document.getElementById("overlay").style.display = "none";
+                }
+            };
+        
+            var data = `{"n":"${n}"}`;
+        
+            xhr.send(data);
+            return;
         } else {
             return;
         }
