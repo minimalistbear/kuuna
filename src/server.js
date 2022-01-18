@@ -70,6 +70,12 @@ app.get("/jumpandrun/stream", (req, res) => {
     console.log(new Date().toString() + ": stream version of kuuna jump'n'run requested");
 });
 
+// Route for n-th Fibonacci no.
+app.get("/fibonacci", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/fibonacci/fibonacci.html"));
+    console.log(new Date().toString() + ": app for n-th Fibonacci no. requested");
+});
+
 /*
  * Setup for socketing
  *
