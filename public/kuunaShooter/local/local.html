@@ -17,7 +17,8 @@
         <div class="d-flex flex-column align-items-center">
             <a href="/" style="text-decoration: none;"><h1 class="kTitle">kuuna</h1></a>
             <h3 class="kTitle">Shooter</h3>
-            <p class="kText">Play Locally</p>
+            <p class="kText">Play Locally <span data-bs-toggle="tooltip" data-bs-placement="right"
+                title="Use W, A, S, and D to move the player. Use Space jump. Use the mouse to look around. Use the left mouse button to fire.">&#10067;</span></p>
         </div>
         <div class="wrapper" id="mainarea">
             <div class="alert alert-warning centered-axis-xy" style="min-height: 20px; display:none;" role="alert" id="compilingmessage">
@@ -47,4 +48,11 @@
 
         <script src="local.js"></script>
     </body>
+
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
 </html>
