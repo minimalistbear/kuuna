@@ -75,20 +75,25 @@ app.get("/fibonacci", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/fibonacci/nthfibno.html"));
     console.log(new Date().toString() + ": app for n-th Fibonacci no. requested");
 });
-const fs = require('fs');
-const wasmBuffer = fs.readFileSync(path.join(__dirname, "../public/fibonacci/fibonacci.wasm"));
-var nthfibno;
-WebAssembly.instantiate(wasmBuffer).then(wasmModule => {
-    nthfibno = wasmModule.instance.exports.nthFibNo;
-});
-
 app.post("/fibonacci", (req, res) => {
     var n = req.body.n;
-    const x = nthfibno(n);
+    var x;
+    if(nthfibno) x = nthfibno(n);
 
     console.log(new Date().toString() + ": calculated nthFibNo(" + n + ") = " + x);
     
     res.send(x.toString());
+});
+/*
+ * Setup for WebAssembly modules
+ *
+ */
+// Fibonacci WASM module loading + instantiation
+const fs = require('fs');
+const wasmBufferFib = fs.readFileSync(path.join(__dirname, "../public/fibonacci/fibonacci.wasm"));
+var nthfibno;
+WebAssembly.instantiate(wasmBufferFib).then(wasmModule => {
+    nthfibno = wasmModule.instance.exports.nthFibNo;
 });
 
 /*
