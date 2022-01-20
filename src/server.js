@@ -61,6 +61,8 @@ app.post("/jumpandrun/remote", (req, res) => {
                 name: open.apps.chrome
             }
         });
+
+        res.send('success');
     }
 )
 app.get("/jumpandrun/stream", (req, res) => {
