@@ -8,6 +8,7 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 
 const open = require('open');
+const { spawn } = require('child_process');
 
 const port = 3000;
 
@@ -30,7 +31,9 @@ app.get("/shooter/remote", (req, res) => {
 });
 app.post("/shooter/remote", (req, res) => {
         var socketID = req.body.socketID;
-        open('http://localhost:' + port + '/shooter/stream?clientid=' + socketID,{
+        var link = 'http://localhost:' + port + '/shooter/stream?clientid=' + socketID;
+
+        open(link,{
             app: {
                 name: open.apps.chrome
             }
@@ -50,13 +53,19 @@ app.get("/jumpandrun/local", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/kuunaJumpAndRun/local/local.html"));
     console.log(new Date().toString() + ": local version of kuuna jump'n'run requested");
 });
-app.get("/jumpandrun/remote", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/kuunaJumpAndRun/remote/remote.html"));
-    console.log(new Date().toString() + ": remote version of kuuna jump'n'run requested");
+app.get("/jumpandrun/remote1", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/kuunaJumpAndRun/remote1/remote1.html"));
+    console.log(new Date().toString() + ": remote (full Chrome) version of kuuna jump'n'run requested");
 });
-app.post("/jumpandrun/remote", (req, res) => {
+app.get("/jumpandrun/remote2", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/kuunaJumpAndRun/remote2/remote2.html"));
+    console.log(new Date().toString() + ": remote (headless Chrome) version of kuuna jump'n'run requested");
+});
+app.post("/jumpandrun/remote1", (req, res) => {
         var socketID = req.body.socketID;
-        open('http://localhost:' + port + '/jumpandrun/stream?clientid=' + socketID,{
+        var link = 'http://localhost:' + port + '/jumpandrun/stream?clientid=' + socketID;
+
+        open(link, {
             app: {
                 name: open.apps.chrome
             }
@@ -64,6 +73,27 @@ app.post("/jumpandrun/remote", (req, res) => {
 
         res.send('success');
     }
+)
+app.post("/jumpandrun/remote2", (req, res) => {
+    var socketID = req.body.socketID;
+    var link = 'http://localhost:' + port + '/jumpandrun/stream?clientid=' + socketID;
+
+    const xvfbRun = spawn('xvfb-run', ['google-chrome', link]);
+
+    xvfbRun.stdout.on('data', (data) => {
+        console.log(new Date().toString() + ` xvfb for ${socketID} (stdout): ${data}`);
+    });
+    
+    xvfbRun.stderr.on('data', (data) => {
+        console.error(new Date().toString() + ` xvfb for ${socketID} (stderr: ${data}`);
+    });
+    
+    xvfbRun.on('close', (code) => {
+        console.log(new Date().toString() + ` xvfb for ${socketID} (stdout): exit with code ${code}`);
+    });
+
+    res.send('success');
+}
 )
 app.get("/jumpandrun/stream", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/kuunaJumpAndRun/stream/stream.html"));
