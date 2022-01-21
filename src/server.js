@@ -100,7 +100,7 @@ app.get("/jumpandrun/stream", (req, res) => {
     console.log(new Date().toString() + ": stream version of kuuna jump'n'run requested");
 });
 
-// Route for n-th Fibonacci no.
+// Routes for n-th Fibonacci no.
 app.get("/fibonacci", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/fibonacci/nthfibno.html"));
     console.log(new Date().toString() + ": app for n-th Fibonacci no. requested");
@@ -114,6 +114,13 @@ app.post("/fibonacci", (req, res) => {
     
     res.send(x.toString());
 });
+
+// Route for Handwriting Recognition
+app.get("/handwriting", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/handwriting/handwriting.html"));
+    console.log(new Date().toString() + ": app for handwriting recognition requested");
+});
+
 /*
  * Setup for WebAssembly modules
  *
