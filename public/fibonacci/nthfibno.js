@@ -14,13 +14,21 @@ function calculate() {
         n = parseInt(n);
 
         var machine = document.getElementById("inputGroupSelectMachine").value;
-        if(machine == "client") {
-            // Execution of function is blocking with large n
-            x = _nthFibNo(n);
-        } else if(machine == "server") {
-            // XHR POST is non-blocking => using overlay while waiting for response
-            document.getElementById("overlay").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
 
+        if(machine == "client") {
+            setTimeout(() => {
+                // Execution of function is blocking with large n
+                x = _nthFibNo(n);
+
+                document.getElementById("xField").innerHTML = x;
+        
+                var msElapsed = new Date() - now;
+                document.getElementById("msField").innerHTML = msElapsed - 50 + "ms";
+
+                document.getElementById("overlay").style.display = "none";
+            }, 50);
+        } else if(machine == "server") {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "/fibonacci");
         
@@ -47,11 +55,6 @@ function calculate() {
         } else {
             return;
         }
-
-        document.getElementById("xField").innerHTML = x;
-    
-        var msElapsed = new Date() - now;
-        document.getElementById("msField").innerHTML = msElapsed + "ms";
     } else {
         document.getElementById("invalidNoAlert").classList.add("d-flex");
         document.getElementById("invalidNoAlert").display = "flex";
