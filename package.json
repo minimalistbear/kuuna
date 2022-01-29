@@ -11,6 +11,7 @@
   "license": "MIT",
   "repository": "github:minimalistbear/kuuna",
   "dependencies": {
+    "chrome-launcher": "0.15.0",
     "express": "4.17.1",
     "multer": "1.4.4",
     "open": "8.4.0",

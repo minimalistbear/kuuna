@@ -52,7 +52,7 @@ socket.on("remote-session-initialised", () => {
 // to open remote server streaming session with 'clientSocketID' as a query parameter
 function openServer() {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/shooter/remote");
+    xhr.open("POST", "/shooter/remote2");
 
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-Type", "application/json");

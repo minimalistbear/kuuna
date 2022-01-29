@@ -10,6 +10,7 @@ const io = require("socket.io")(server);
 
 const open = require('open');
 const { spawn } = require('child_process');
+const chromeLauncher = require('chrome-launcher');
 
 const port = 3000;
 
@@ -26,11 +27,15 @@ app.get("/shooter/local", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/kuunaShooter/local/local.html"));
     console.log(new Date().toString() + ": local version of kuuna shooter requested");
 });
-app.get("/shooter/remote", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/kuunaShooter/remote/remote.html"));
-    console.log(new Date().toString() + ": remote version of kuuna shooter requested");
+app.get("/shooter/remote1", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/kuunaShooter/remote1/remote1.html"));
+    console.log(new Date().toString() + ": remote (full Chrome) version of kuuna shooter requested");
 });
-app.post("/shooter/remote", (req, res) => {
+app.get("/shooter/remote2", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/kuunaShooter/remote2/remote2.html"));
+    console.log(new Date().toString() + ": remote (Chrome in xvfb) version of kuuna shooter requested");
+});
+app.post("/shooter/remote1", (req, res) => {
         var socketID = req.body.socketID;
         var link = 'http://localhost:' + port + '/shooter/stream?clientid=' + socketID;
 
@@ -38,6 +43,27 @@ app.post("/shooter/remote", (req, res) => {
             app: {
                 name: open.apps.chrome
             }
+        });
+
+        res.send('success');
+    }
+)
+app.post("/shooter/remote2", (req, res) => {
+        var socketID = req.body.socketID;
+        var link = 'http://localhost:' + port + '/shooter/stream?clientid=' + socketID;
+
+        const xvfbRun = spawn('xvfb-run', ['google-chrome', link]);
+
+        xvfbRun.stdout.on('data', (data) => {
+            console.log(new Date().toString() + `: xvfb for ${socketID} (stdout): ${data}`);
+        });
+        
+        xvfbRun.stderr.on('data', (data) => {
+            console.error(new Date().toString() + `: xvfb for ${socketID} (stderr: ${data}`);
+        });
+        
+        xvfbRun.on('close', (code) => {
+            console.log(new Date().toString() + `: xvfb for ${socketID} (stdout): exit with code ${code}`);
         });
 
         res.send('success');
@@ -76,25 +102,18 @@ app.post("/jumpandrun/remote1", (req, res) => {
     }
 )
 app.post("/jumpandrun/remote2", (req, res) => {
-    var socketID = req.body.socketID;
-    var link = 'http://localhost:' + port + '/jumpandrun/stream?clientid=' + socketID;
+        var socketID = req.body.socketID;
+        var link = 'http://localhost:' + port + '/jumpandrun/stream?clientid=' + socketID;
 
-    const xvfbRun = spawn('xvfb-run', ['google-chrome', link]);
+        chromeLauncher.launch({
+            startingUrl: link,
+            chromeFlags: ['--headless']
+        }).then(chrome => {
+            console.log(new Date().toString() + `: remote chrome session for ${socketID} debugging on port ${chrome.port}`);
+        });
 
-    xvfbRun.stdout.on('data', (data) => {
-        console.log(new Date().toString() + ` xvfb for ${socketID} (stdout): ${data}`);
-    });
-    
-    xvfbRun.stderr.on('data', (data) => {
-        console.error(new Date().toString() + ` xvfb for ${socketID} (stderr: ${data}`);
-    });
-    
-    xvfbRun.on('close', (code) => {
-        console.log(new Date().toString() + ` xvfb for ${socketID} (stdout): exit with code ${code}`);
-    });
-
-    res.send('success');
-}
+        res.send('success');
+    }
 )
 app.get("/jumpandrun/stream", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/kuunaJumpAndRun/stream/stream.html"));
@@ -140,11 +159,11 @@ app.post("/handwriting", type, (req, res) => {
             responseSent = true;
         }
 
-        console.log(new Date().toString() + ` tesseract for ${req.file.filename} (stdout): ${data}`);
+        console.log(new Date().toString() + `: tesseract for ${req.file.filename} (stdout): ${data}`);
     });
     
     tesseractRun.stderr.on('data', (data) => {
-        console.error(new Date().toString() + ` tesseract for ${req.file.filename} (stderr): ${data}`);
+        console.error(new Date().toString() + `: tesseract for ${req.file.filename} (stderr): ${data}`);
 
         if(!responseSent && data.toString().startsWith("Empty page!!")) {
             res.send(recognisedString.toString());
@@ -153,7 +172,7 @@ app.post("/handwriting", type, (req, res) => {
     });
     
     tesseractRun.on('close', (code) => {
-        console.log(new Date().toString() + ` tesseract for ${req.file.filename} (stdout): exit with code ${code}`);
+        console.log(new Date().toString() + `: tesseract for ${req.file.filename} (stdout): exit with code ${code}`);
 
         if(!responseSent) {
             res.send(recognisedString.toString());

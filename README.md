@@ -23,3 +23,4 @@ Evaluation of WebAssembly as a portable compilation target for delivery of compl
 * socket.io 4.0.1
 * open 8.4.0
 * multer 1.4.4
+* chrome-launcher 0.15.0
