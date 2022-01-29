@@ -43,13 +43,67 @@ function setMouseCoordinates(event) {
  */
 function clearCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height);
-};
-function downloadAsImage() {
-    var canvasDataURL = canvas.toDataURL();
-    var a = document.createElement('a');
-    a.href = canvasDataURL;
-    a.download = 'writing';
-    a.click();
 
-    clearCanvas();
+    document.getElementById("xField").innerHTML = '';
+    document.getElementById("msField").innerHTML = '[time elapsed]';
 };
+async function runRecognition() {
+    var now = new Date();
+
+    var canvasDataURL = canvas.toDataURL();
+    var recognisedString;
+
+    var machine = document.getElementById("inputGroupSelectMachine").value;
+    document.getElementById("overlay").style.display = "block";
+
+    if(machine == "client") {
+        setTimeout(() => {
+            // Execution of function is blocking
+            recognisedString = _readCharacters(canvasDataURL);
+
+            document.getElementById("xField").innerHTML = recognisedString;
+    
+            var msElapsed = new Date() - now;
+            document.getElementById("msField").innerHTML = msElapsed - 50 + "ms";
+
+            document.getElementById("overlay").style.display = "none";
+        }, 50);
+    } else if(machine == "server") {
+        var blob = await fetch(canvasDataURL).then(r => r.blob());
+        var data = new FormData();
+        data.append("canvasUpload", blob);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/handwriting");
+
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4 || 2) {
+                recognisedString = xhr.responseText;
+
+                document.getElementById("xField").innerHTML = recognisedString;
+
+                var msElapsed = new Date() - now;
+                document.getElementById("msField").innerHTML = msElapsed + "ms";
+
+                document.getElementById("overlay").style.display = "none";
+            }
+        };
+    
+        xhr.send(data);
+        return;
+    } else {
+        return;
+    }
+
+    // Code for downloading *.png
+    /*
+        var a = document.createElement('a');
+        a.href = canvasDataURL;
+        a.download = 'writing';
+        a.click();
+    */
+};
+
+function _readCharacters(location) {
+    return "ThisIsMyTestString";
+}

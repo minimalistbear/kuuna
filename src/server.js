@@ -2,6 +2,7 @@
 const express = require('express');
 const http = require("http");
 const path = require('path');
+const multer  = require('multer');
 
 const app = express();
 const server = http.createServer(app);
@@ -121,6 +122,46 @@ app.get("/handwriting", (req, res) => {
     console.log(new Date().toString() + ": app for handwriting recognition requested");
 });
 
+var upload = multer({ dest: __dirname + '/../uploads/' });
+var type = upload.single('canvasUpload');
+
+app.post("/handwriting", type, (req, res) => {
+    var recognisedString = "";
+    var responseSent = false;
+
+    // TODO: Temporary solution with tesseract locally
+    const tesseractRun = spawn('tesseract', [req.file.path, 'stdout']);
+
+    tesseractRun.stdout.on('data', (data) => {
+        recognisedString = data;
+        console.log(new Date().toString() + ": recognised with readCharacters(" + req.file.filename + ") = " + recognisedString);
+        if(!responseSent) {
+            res.send(recognisedString.toString());
+            responseSent = true;
+        }
+
+        console.log(new Date().toString() + ` tesseract for ${req.file.filename} (stdout): ${data}`);
+    });
+    
+    tesseractRun.stderr.on('data', (data) => {
+        console.error(new Date().toString() + ` tesseract for ${req.file.filename} (stderr): ${data}`);
+
+        if(!responseSent && data.toString().startsWith("Empty page!!")) {
+            res.send(recognisedString.toString());
+            responseSent = true;
+        }
+    });
+    
+    tesseractRun.on('close', (code) => {
+        console.log(new Date().toString() + ` tesseract for ${req.file.filename} (stdout): exit with code ${code}`);
+
+        if(!responseSent) {
+            res.send(recognisedString.toString());
+            responseSent = true;
+        }
+    });
+});
+
 /*
  * Setup for WebAssembly modules
  *
@@ -132,6 +173,9 @@ var nthfibno;
 WebAssembly.instantiate(wasmBufferFib).then(wasmModule => {
     nthfibno = wasmModule.instance.exports.nthFibNo;
 });
+
+// Handwriting Recognition WASM module loading + instatiation
+// TODO
 
 /*
  * Setup for socketing

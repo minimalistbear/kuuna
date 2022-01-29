@@ -17,3 +17,6 @@ app.out.log
 
 # Mac/OSX
 .DS_Store
+
+# Upload Folder
+uploads/

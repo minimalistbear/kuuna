@@ -44,7 +44,8 @@ using namespace std;
                 exit(1);
             }
 
-            Pix *image = pixRead(picPath);
+            const char* chrPicPath = picPath.c_str();
+            Pix *image = pixRead(chrPicPath);
             api->SetImage(image);
             
             outText = api->GetUTF8Text();

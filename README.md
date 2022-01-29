@@ -22,3 +22,4 @@ Evaluation of WebAssembly as a portable compilation target for delivery of compl
 * stats.js r17
 * socket.io 4.0.1
 * open 8.4.0
+* multer 1.4.4
