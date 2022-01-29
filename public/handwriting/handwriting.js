@@ -105,5 +105,5 @@ async function runRecognition() {
 };
 
 function _readCharacters(location) {
-    return "ThisIsMyTestString";
+    return "[client not implemented yet]";
 }
