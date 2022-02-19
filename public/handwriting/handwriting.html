@@ -30,9 +30,9 @@
         <div class="input-group d-flex flex-column align-items-center" style="margin-top: 4px;">
             <div class="input-group" style="width: auto; margin-bottom: 4px;">
                 <label class="input-group-text" for="inputGroupSelectMachine" style="width: 180px;">Run recognition on...</label>
-                <select class="form-select" id="inputGroupSelectMachine" style="width: 163px; flex: 0 0 auto;">
-                  <option selected value="client"> client</option>
-                  <option value="server">server</option>
+                <select class="form-select" id="inputGroupSelectMachine" style="width: 163px; flex: 0 0 auto;" disabled>
+                  <option value="client"> client</option>
+                  <option selected value="server">server</option>
                 </select>
                 <button class="btn btn-warning" type="button" id="clearButton" onclick="clearCanvas()">Clear</button>
                 <button class="btn btn-primary" type="button" id="recognitionButton" onclick="runRecognition()">Recognise</button>
