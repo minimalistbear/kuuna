@@ -24,3 +24,4 @@ Evaluation of WebAssembly as a portable compilation target for delivery of compl
 * open 8.4.0
 * multer 1.4.4
 * chrome-launcher 0.15.0
+* inkjet 3.0.0

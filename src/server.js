@@ -11,6 +11,7 @@ const io = require("socket.io")(server);
 const open = require('open');
 const { spawn } = require('child_process');
 const chromeLauncher = require('chrome-launcher');
+const inkjet = require('inkjet');
 
 const port = 3000;
 
@@ -181,20 +182,78 @@ app.post("/handwriting", type, (req, res) => {
     });
 });
 
+// Routes for WebP encoder
+app.get("/webp", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/webp/encoder.html"));
+    console.log(new Date().toString() + ": app for WebP encoder requested");
+});
+
+var upload = multer({ dest: __dirname + '/../uploads2/' });
+var type2 = upload.single('imageUpload');
+
+app.post("/webp", type2, (req, res) => {
+    const buffer = fs.readFileSync(req.file.path);
+    inkjet.decode(buffer, (err, decoded) => {
+        /*
+         * WebAssembly Interaction [start]
+         */
+        var p = wasmInstanceWebP._create_buffer(decoded.width, decoded.height);
+        wasmInstanceWebP.HEAP8.set(decoded.data, p);
+
+        wasmInstanceWebP._encode(p, decoded.width, decoded.height, 100);
+
+        const resultPointer = wasmInstanceWebP._get_result_pointer();
+        const resultSize = wasmInstanceWebP._get_result_size();
+        const resultView = new Uint8Array(wasmInstanceWebP.HEAP8.buffer, resultPointer, resultSize);
+        const result = new Uint8Array(resultView);
+
+        wasmInstanceWebP._free_result(resultPointer);
+        wasmInstanceWebP._destroy_buffer(p);
+        /*
+         * WebAssembly Interaction [finish]
+         */
+
+        fs.writeFileSync(req.file.path + ".webp", Buffer.from(result));
+
+        console.log(new Date().toString() + ": encoded a JPG " + req.file.filename + " of " + decoded.width + "*" + decoded.height + " to WebP");
+        
+        res.send(req.file.filename);
+    });
+});
+
+app.get("/downloadwebp", (req, res) => {
+    const imgID = req.query.imgID;
+
+    const buffer = fs.readFileSync(path.join(__dirname, "../uploads2/" + imgID + ".webp"));
+    res.send(buffer);
+
+    console.log(new Date().toString() + ": sent " + imgID + ".webp to a client");
+});
+
 /*
  * Setup for WebAssembly modules
  *
  */
-// Fibonacci WASM module loading + instantiation
 const fs = require('fs');
+
+// Fibonacci WASM loading + instantiation
 const wasmBufferFib = fs.readFileSync(path.join(__dirname, "../public/fibonacci/fibonacci.wasm"));
-var nthfibno;
+var nthfibno, wasmInstanceFib;
 WebAssembly.instantiate(wasmBufferFib).then(wasmModule => {
+    wasmInstanceFib = wasmModule.instance;
     nthfibno = wasmModule.instance.exports.nthFibNo;
+
+    console.log(new Date().toString() + ": WebAssembly module for fibonacci loaded");
 });
 
-// Handwriting Recognition WASM module loading + instatiation
-// TODO
+// WebP Encoding WASM loading + instatiation with help of Emscripten generated modulaised JS glue code file
+var factory = require('./webp/webp.js');
+var wasmInstanceWebP;
+factory().then((instance) => {
+    wasmInstanceWebP = instance;
+
+    console.log(new Date().toString() + ": WebP encoder module for fibonacci loaded");
+});
 
 /*
  * Setup for socketing

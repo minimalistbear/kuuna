@@ -57,7 +57,7 @@ int getNthFibNo(int n) {
  *   emcc fibonacci.cpp -s WASM=1 -O0 -o fibonacci.js )
  *   // flag "-s WASM=1": wasm output https://developer.mozilla.org/en-US/docs/WebAssembly/C_to_wasm
  *   // flag "-O0": no optimisation https://emscripten.org/docs/optimizing/Optimizing-Code.html
- *   // flag "-o": outputting only the JS glue file https://developer.mozilla.org/en-US/docs/WebAssembly/C_to_wasm
+ *   // flag "-o": outputting WASM with the JS glue file https://developer.mozilla.org/en-US/docs/WebAssembly/C_to_wasm
  *
  */
 int main() {

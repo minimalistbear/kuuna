@@ -13,6 +13,7 @@
   "dependencies": {
     "chrome-launcher": "0.15.0",
     "express": "4.17.1",
+    "inkjet": "3.0.0",
     "multer": "1.4.4",
     "open": "8.4.0",
     "socket.io": "4.0.1"

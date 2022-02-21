@@ -18,5 +18,7 @@ app.out.log
 # Mac/OSX
 .DS_Store
 
-# Upload Folder
+# Folders
 uploads/
+uploads2/
+libwebp/
