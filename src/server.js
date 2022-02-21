@@ -149,7 +149,7 @@ app.post("/handwriting", type, (req, res) => {
     var recognisedString = "";
     var responseSent = false;
 
-    // TODO: Temporary solution with tesseract locally
+    // TODO: Temporary workaround solution with tesseract locally
     const tesseractRun = spawn('tesseract', [req.file.path, 'stdout']);
 
     tesseractRun.stdout.on('data', (data) => {
@@ -246,7 +246,7 @@ WebAssembly.instantiate(wasmBufferFib).then(wasmModule => {
     console.log(new Date().toString() + ": WebAssembly module for fibonacci loaded");
 });
 
-// WebP Encoding WASM loading + instatiation with help of Emscripten generated modulaised JS glue code file
+// WebP Encoding WASM loading + instatiation with help of Emscripten generated modularised JS glue code file
 var factory = require('./webp/webp.js');
 var wasmInstanceWebP;
 factory().then((instance) => {
