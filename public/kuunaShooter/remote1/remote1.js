@@ -45,6 +45,8 @@ socket.on("client-called", async (data) => {
 socket.on("remote-session-initialised", () => {
     const compilingmessage = document.getElementById("compilingmessage");
     compilingmessage.remove();
+
+    showTimeElapsed();
 });
 
 // Called after socket has been opened:
@@ -150,4 +152,17 @@ function pointerLockChange() {
     } else {
         pointerLocked = false;
     }
+}
+
+/*
+ * Functions and variables
+ * for measuring load time
+ *
+ */
+var now = new Date();
+
+function showTimeElapsed() {
+    var msElapsed = new Date() - now;
+
+    console.log("load time for remote kuuna Shooter: " + msElapsed + "ms");
 }
