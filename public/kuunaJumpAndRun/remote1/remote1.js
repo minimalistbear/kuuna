@@ -226,3 +226,72 @@ function showTimeElapsed() {
 
     console.log("load time for remote kuuna Jump'N'Run: " + msElapsed + "ms");
 }
+
+/*
+ * Functions and variables
+ * for monitoring incoming WebRTC connection
+ *
+ */
+var statsEnabled = false;
+var statsSwitch = document.querySelector("input[id=statsSwitch]");
+statsSwitch.addEventListener('change', () => {
+    statsEnabled = statsSwitch.checked;
+    if(statsEnabled) stats();
+})
+
+function stats(){
+    if (peerConnection) {
+        peerConnection
+            .getStats(null)
+            .then(showRemoteStats);
+    }
+
+    if(statsEnabled) setTimeout(stats, 1000);
+}
+
+var bytesPrev = 0;
+var timestampPrev = 0;
+function showRemoteStats(results) {
+    results.forEach(report => {
+        if(report.type === 'inbound-rtp') {
+
+            let bitrate, now = report.timestamp;
+            const bytes = report.bytesReceived;
+            if (timestampPrev) {
+                bitrate = 8 * (bytes - bytesPrev) / (now - timestampPrev);
+                bitrate = Math.floor(bitrate);
+            }
+            bytesPrev = bytes;
+            timestampPrev = now;
+
+            if (bitrate) {
+                bitrate += ' kbits/sec';
+                console.log(new Date().toString() + ": " + dumpStats(report) + " bitrate: " + bitrate);
+            } else {
+                console.log(new Date().toString() + ": " + dumpStats(report));
+            }
+        }
+        if(report.type === 'candidate-pair') {
+            console.log(new Date().toString() + ": " + dumpStats(report));
+        }
+    });
+}
+
+function dumpStats(res) {
+    let statsString = '';
+
+    statsString += `report type: ${res.type} `;
+    statsString += `id: ${res.id} `;
+    statsString += `time: ${res.timestamp} `;
+    Object.keys(res).forEach(k => {
+        if (k !== 'timestamp' && k !== 'type' && k !== 'id') {
+            if (typeof res[k] === 'object') {
+                statsString += `${k}: ${JSON.stringify(res[k])} `;
+            } else {
+                statsString += `${k}: ${res[k]} `;
+            }
+        }
+    });
+
+    return statsString;
+}

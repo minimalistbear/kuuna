@@ -46,6 +46,12 @@
 	right: 20px;
 }
 
+.kFloatingTopLeft {
+    position: fixed;
+	top: 60px;
+	left: 20px;
+}
+
 .kFloatingBottomLeft {
     position: fixed;
 	bottom: 20px;

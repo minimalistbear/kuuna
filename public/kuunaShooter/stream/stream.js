@@ -107,9 +107,13 @@ async function getMedia() {
         // Stream from canvas element limited to video only as of yet
         const stream = canvas.captureStream();
 
+        var videoTrack = stream.getVideoTracks()[0];
+        videoTrack.applyConstraints({ frameRate: { max: 60 }});
+
+        var sender;
         stream
             .getTracks()
-            .forEach((track) => peerConnection.addTrack(track, stream));
+            .forEach((track) => sender = peerConnection.addTrack(track, stream));
 
         const params = new URLSearchParams(window.location.search);
         clientSocketID = params.get('clientid');
